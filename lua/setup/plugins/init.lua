@@ -1,0 +1,3 @@
+return {
+	{ import = "setup.plugins" },
+}

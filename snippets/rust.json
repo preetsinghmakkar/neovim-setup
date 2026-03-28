@@ -1,0 +1,43 @@
+{
+  "main function": {
+    "prefix": "main",
+    "body": ["fn main() {", "    ${1:// code}", "}"],
+    "description": "Rust main function"
+  },
+  "read input": {
+    "prefix": "read",
+    "body": [
+      "let mut input = String::new();",
+      "std::io::stdin().read_line(&mut input).unwrap();",
+      "let ${1:var} = input.trim().parse::<${2:i32}>().unwrap();"
+    ],
+    "description": "Read and parse input"
+  },
+  "read multiple": {
+    "prefix": "readm",
+    "body": [
+      "let mut input = String::new();",
+      "std::io::stdin().read_line(&mut input).unwrap();",
+      "let ${1:values}: Vec<${2:i32}> = input",
+      "    .split_whitespace()",
+      "    .map(|x| x.parse().unwrap())",
+      "    .collect();"
+    ],
+    "description": "Read multiple values"
+  },
+  "for loop": {
+    "prefix": "for",
+    "body": ["for ${1:i} in ${2:0}..${3:n} {", "    ${4:// code}", "}"],
+    "description": "For loop"
+  },
+  "println": {
+    "prefix": "pln",
+    "body": "println!(\"${1:}\");",
+    "description": "Print with newline"
+  },
+  "vector": {
+    "prefix": "vec",
+    "body": "let ${1:name} = vec![${2:}];",
+    "description": "Create vector"
+  }
+}
