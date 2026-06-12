@@ -1,44 +1,71 @@
 vim.cmd("let g:netrw_liststyle = 3")
 
-local opt = vim.opt -- for conciseness
+local opt = vim.opt
 
 -- line numbers
-opt.relativenumber = true -- show relative line numbers
-opt.number = true -- shows absolute line number on cursor line (when relative number is on)
+opt.relativenumber = true
+opt.number = true
 
 -- tabs & indentation
-opt.tabstop = 2 -- 2 spaces for tabs (prettier default)
-opt.shiftwidth = 2 -- 2 spaces for indent width
-opt.expandtab = true -- expand tab to spaces
-opt.autoindent = true -- copy indent from current line when starting new one
+opt.tabstop = 4       -- Rust standard: 4 spaces
+opt.shiftwidth = 4
+opt.softtabstop = 4
+opt.expandtab = true
+opt.autoindent = true
+opt.smartindent = true
 
 -- line wrapping
-opt.wrap = false -- disable line wrapping
+opt.wrap = false
 
 -- search settings
-opt.ignorecase = true -- ignore case when searching
-opt.smartcase = true -- if you include mixed case in your search, assumes you want case-sensitive
+opt.ignorecase = true
+opt.smartcase = true
+opt.hlsearch = true
+opt.incsearch = true
 
--- cursor line
-opt.cursorline = true -- highlight the current cursor line
+-- cursor
+opt.cursorline = true
+opt.scrolloff = 8      -- keep 8 lines above/below cursor when scrolling
+opt.sidescrolloff = 8
 
 -- appearance
-
--- turn on termguicolors for nightfly colorscheme to work
--- (have to use iterm2 or any other true color terminal)
 opt.termguicolors = true
-opt.background = "dark" -- colorschemes that can be light or dark will be made dark
-opt.signcolumn = "yes" -- show sign column so that text doesn't shift
+opt.background = "dark"
+opt.signcolumn = "yes"
+opt.colorcolumn = "100"  -- guide line at 100 chars (Rust default)
+opt.showmode = false      -- mode is shown in lualine
 
 -- backspace
-opt.backspace = "indent,eol,start" -- allow backspace on indent, end of line or insert mode start position
+opt.backspace = "indent,eol,start"
 
 -- clipboard
-opt.clipboard:append("unnamedplus") -- use system clipboard as default register
+opt.clipboard:append("unnamedplus")
 
 -- split windows
-opt.splitright = true -- split vertical window to the right
-opt.splitbelow = true -- split horizontal window to the bottom
+opt.splitright = true
+opt.splitbelow = true
 
--- turn off swapfile
+-- performance
+opt.updatetime = 50     -- faster CursorHold (default 4000ms)
+opt.timeoutlen = 300    -- which-key triggers faster
+
+-- undo (persistent across sessions — very useful for large codebases)
+opt.undofile = true
+opt.undodir = vim.fn.stdpath("data") .. "/undodir"
+opt.undolevels = 10000
+
+-- no swap/backup (use undofile instead)
 opt.swapfile = false
+opt.backup = false
+
+-- completion
+opt.completeopt = "menuone,noselect"
+opt.pumheight = 10    -- limit completion menu height
+
+-- misc
+opt.isfname:append("@-@")  -- treat @ as part of filenames
+opt.shortmess:append("c")  -- no completion messages
+opt.conceallevel = 0        -- show `` in markdown files
+
+-- ensure undo dir exists
+vim.fn.mkdir(vim.fn.stdpath("data") .. "/undodir", "p")

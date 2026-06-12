@@ -1,43 +1,437 @@
 {
-  "main function": {
-    "prefix": "main",
-    "body": ["fn main() {", "    ${1:// code}", "}"],
-    "description": "Rust main function"
-  },
-  "read input": {
-    "prefix": "read",
+  "CP main (fast I/O)": {
+    "prefix": "cpmain",
     "body": [
-      "let mut input = String::new();",
-      "std::io::stdin().read_line(&mut input).unwrap();",
-      "let ${1:var} = input.trim().parse::<${2:i32}>().unwrap();"
+      "use std::io::{self, BufRead, Write};",
+      "",
+      "fn solve<W: Write>(input: &[&str], out: &mut W) {",
+      "    let mut iter = input.iter();",
+      "    let _n: usize = iter.next().unwrap().trim().parse().unwrap();",
+      "    ${1:// solve here}",
+      "    writeln!(out, \"\").unwrap();",
+      "}",
+      "",
+      "fn main() {",
+      "    let stdin = io::stdin();",
+      "    let stdout = io::stdout();",
+      "    let mut out = io::BufWriter::new(stdout.lock());",
+      "    let lines: Vec<String> = stdin.lock().lines().map(|l| l.unwrap()).collect();",
+      "    let refs: Vec<&str> = lines.iter().map(|s| s.as_str()).collect();",
+      "    solve(&refs, &mut out);",
+      "}"
     ],
-    "description": "Read and parse input"
+    "description": "CP main with fast buffered I/O"
   },
-  "read multiple": {
-    "prefix": "readm",
+
+  "CP main (multi-test)": {
+    "prefix": "cpmt",
     "body": [
-      "let mut input = String::new();",
-      "std::io::stdin().read_line(&mut input).unwrap();",
-      "let ${1:values}: Vec<${2:i32}> = input",
-      "    .split_whitespace()",
-      "    .map(|x| x.parse().unwrap())",
-      "    .collect();"
+      "use std::io::{self, BufRead, Write};",
+      "",
+      "fn solve<W: Write>(input: &[&str], out: &mut W) {",
+      "    ${1:// solve one test case}",
+      "    writeln!(out, \"\").unwrap();",
+      "}",
+      "",
+      "fn main() {",
+      "    let stdin = io::stdin();",
+      "    let stdout = io::stdout();",
+      "    let mut out = io::BufWriter::new(stdout.lock());",
+      "    let lines: Vec<String> = stdin.lock().lines().map(|l| l.unwrap()).collect();",
+      "    let refs: Vec<&str> = lines.iter().map(|s| s.as_str()).collect();",
+      "",
+      "    let t: usize = refs[0].trim().parse().unwrap();",
+      "    let mut i = 1;",
+      "    for _ in 0..t {",
+      "        let n: usize = refs[i].trim().parse().unwrap();",
+      "        solve(&refs[i..i + n + 1], &mut out);",
+      "        i += n + 1;",
+      "    }",
+      "}"
     ],
-    "description": "Read multiple values"
+    "description": "CP main with multiple test cases"
   },
-  "for loop": {
-    "prefix": "for",
-    "body": ["for ${1:i} in ${2:0}..${3:n} {", "    ${4:// code}", "}"],
-    "description": "For loop"
+
+  "read single": {
+    "prefix": "read1",
+    "body": [
+      "let ${1:x}: ${2:i64} = {",
+      "    let mut s = String::new();",
+      "    io::stdin().read_line(&mut s).unwrap();",
+      "    s.trim().parse().unwrap()",
+      "};"
+    ],
+    "description": "Read single value from stdin"
   },
+
+  "read line as vec": {
+    "prefix": "readv",
+    "body": [
+      "let ${1:v}: Vec<${2:i64}> = {",
+      "    let mut s = String::new();",
+      "    io::stdin().read_line(&mut s).unwrap();",
+      "    s.split_whitespace().map(|x| x.parse().unwrap()).collect()",
+      "};"
+    ],
+    "description": "Read space-separated values as Vec"
+  },
+
+  "parse from str slice": {
+    "prefix": "parsev",
+    "body": "let ${1:v}: Vec<${2:i64}> = ${3:line}.split_whitespace().map(|x| x.parse().unwrap()).collect();",
+    "description": "Parse whitespace-separated numbers from str"
+  },
+
+  "parse two values": {
+    "prefix": "parse2",
+    "body": [
+      "let parts: Vec<${1:i64}> = ${2:line}.split_whitespace().map(|x| x.parse().unwrap()).collect();",
+      "let (${3:a}, ${4:b}) = (parts[0], parts[1]);"
+    ],
+    "description": "Parse two values from a line"
+  },
+
+  "for range": {
+    "prefix": "fori",
+    "body": ["for ${1:i} in ${2:0}..${3:n} {", "    ${4:}", "}"],
+    "description": "For loop with range"
+  },
+
+  "for enumerate": {
+    "prefix": "fore",
+    "body": ["for (${1:i}, ${2:val}) in ${3:iter}.iter().enumerate() {", "    ${4:}", "}"],
+    "description": "For loop with enumerate"
+  },
+
   "println": {
     "prefix": "pln",
-    "body": "println!(\"${1:}\");",
-    "description": "Print with newline"
+    "body": "println!(\"${1}\");",
+    "description": "println! macro"
   },
-  "vector": {
-    "prefix": "vec",
-    "body": "let ${1:name} = vec![${2:}];",
-    "description": "Create vector"
+
+  "eprintln debug": {
+    "prefix": "dbg",
+    "body": "eprintln!(\"[DEBUG] ${1:var} = {:?}\", ${1:var});",
+    "description": "Debug print to stderr"
+  },
+
+  "vec new": {
+    "prefix": "vecn",
+    "body": "let mut ${1:v}: Vec<${2:i64}> = Vec::new();",
+    "description": "New empty Vec"
+  },
+
+  "vec with capacity": {
+    "prefix": "vecc",
+    "body": "let mut ${1:v}: Vec<${2:i64}> = Vec::with_capacity(${3:n});",
+    "description": "Vec with capacity"
+  },
+
+  "vec filled": {
+    "prefix": "vecf",
+    "body": "let ${1:v} = vec![${2:0}; ${3:n}];",
+    "description": "Vec filled with value"
+  },
+
+  "2D vec": {
+    "prefix": "vec2d",
+    "body": "let mut ${1:grid} = vec![vec![${2:0}; ${3:cols}]; ${4:rows}];",
+    "description": "2D Vec (grid)"
+  },
+
+  "HashMap": {
+    "prefix": "hmap",
+    "body": [
+      "let mut ${1:map}: std::collections::HashMap<${2:i64}, ${3:i64}> = std::collections::HashMap::new();"
+    ],
+    "description": "HashMap"
+  },
+
+  "HashMap entry": {
+    "prefix": "entry",
+    "body": "*${1:map}.entry(${2:key}).or_insert(${3:0}) += ${4:1};",
+    "description": "HashMap entry API (increment counter)"
+  },
+
+  "BinaryHeap max": {
+    "prefix": "maxheap",
+    "body": "let mut ${1:heap}: std::collections::BinaryHeap<${2:i64}> = std::collections::BinaryHeap::new();",
+    "description": "Max heap (BinaryHeap)"
+  },
+
+  "BinaryHeap min": {
+    "prefix": "minheap",
+    "body": "let mut ${1:heap}: std::collections::BinaryHeap<std::cmp::Reverse<${2:i64}>> = std::collections::BinaryHeap::new();",
+    "description": "Min heap (BinaryHeap with Reverse)"
+  },
+
+  "BTreeMap sorted": {
+    "prefix": "bmap",
+    "body": "let mut ${1:map}: std::collections::BTreeMap<${2:i64}, ${3:i64}> = std::collections::BTreeMap::new();",
+    "description": "BTreeMap (sorted keys)"
+  },
+
+  "BTreeSet sorted": {
+    "prefix": "bset",
+    "body": "let mut ${1:set}: std::collections::BTreeSet<${2:i64}> = std::collections::BTreeSet::new();",
+    "description": "BTreeSet (sorted unique values)"
+  },
+
+  "VecDeque": {
+    "prefix": "deque",
+    "body": "let mut ${1:dq}: std::collections::VecDeque<${2:i64}> = std::collections::VecDeque::new();",
+    "description": "VecDeque (double-ended queue)"
+  },
+
+  "sort ascending": {
+    "prefix": "sort",
+    "body": "${1:v}.sort_unstable();",
+    "description": "Sort vec ascending (unstable, faster)"
+  },
+
+  "sort descending": {
+    "prefix": "sortd",
+    "body": "${1:v}.sort_unstable_by(|a, b| b.cmp(a));",
+    "description": "Sort vec descending"
+  },
+
+  "sort by key": {
+    "prefix": "sortk",
+    "body": "${1:v}.sort_unstable_by_key(|${2:x}| ${3:*x});",
+    "description": "Sort by key"
+  },
+
+  "binary search": {
+    "prefix": "bsearch",
+    "body": [
+      "let pos = ${1:v}.binary_search(&${2:target}).unwrap_or_else(|x| x);"
+    ],
+    "description": "Binary search (returns index or insertion point)"
+  },
+
+  "binary search custom": {
+    "prefix": "bsearchc",
+    "body": [
+      "let mut lo = ${1:0i64};",
+      "let mut hi = ${2:n as i64};",
+      "while lo < hi {",
+      "    let mid = lo + (hi - lo) / 2;",
+      "    if ${3:check(mid)} {",
+      "        hi = mid;",
+      "    } else {",
+      "        lo = mid + 1;",
+      "    }",
+      "}",
+      "// lo is the answer"
+    ],
+    "description": "Custom binary search template"
+  },
+
+  "GCD": {
+    "prefix": "gcd",
+    "body": [
+      "fn gcd(a: i64, b: i64) -> i64 {",
+      "    if b == 0 { a } else { gcd(b, a % b) }",
+      "}"
+    ],
+    "description": "GCD function"
+  },
+
+  "LCM": {
+    "prefix": "lcm",
+    "body": [
+      "fn lcm(a: i64, b: i64) -> i64 {",
+      "    a / gcd(a, b) * b",
+      "}"
+    ],
+    "description": "LCM function (uses gcd)"
+  },
+
+  "modpow": {
+    "prefix": "modpow",
+    "body": [
+      "fn modpow(mut base: i64, mut exp: i64, modulus: i64) -> i64 {",
+      "    let mut result = 1i64;",
+      "    base %= modulus;",
+      "    while exp > 0 {",
+      "        if exp % 2 == 1 {",
+      "            result = result * base % modulus;",
+      "        }",
+      "        exp /= 2;",
+      "        base = base * base % modulus;",
+      "    }",
+      "    result",
+      "}"
+    ],
+    "description": "Modular exponentiation"
+  },
+
+  "prefix sum": {
+    "prefix": "prefix",
+    "body": [
+      "let mut prefix = vec![0i64; ${1:v}.len() + 1];",
+      "for (i, &x) in ${1:v}.iter().enumerate() {",
+      "    prefix[i + 1] = prefix[i] + x;",
+      "}"
+    ],
+    "description": "Build prefix sum array"
+  },
+
+  "union find": {
+    "prefix": "uf",
+    "body": [
+      "struct UnionFind {",
+      "    parent: Vec<usize>,",
+      "    rank: Vec<usize>,",
+      "}",
+      "",
+      "impl UnionFind {",
+      "    fn new(n: usize) -> Self {",
+      "        Self { parent: (0..n).collect(), rank: vec![0; n] }",
+      "    }",
+      "",
+      "    fn find(&mut self, x: usize) -> usize {",
+      "        if self.parent[x] != x {",
+      "            self.parent[x] = self.find(self.parent[x]);",
+      "        }",
+      "        self.parent[x]",
+      "    }",
+      "",
+      "    fn union(&mut self, x: usize, y: usize) -> bool {",
+      "        let (rx, ry) = (self.find(x), self.find(y));",
+      "        if rx == ry { return false; }",
+      "        match self.rank[rx].cmp(&self.rank[ry]) {",
+      "            std::cmp::Ordering::Less => self.parent[rx] = ry,",
+      "            std::cmp::Ordering::Greater => self.parent[ry] = rx,",
+      "            std::cmp::Ordering::Equal => { self.parent[ry] = rx; self.rank[rx] += 1; }",
+      "        }",
+      "        true",
+      "    }",
+      "}"
+    ],
+    "description": "Union-Find (DSU) with path compression and union by rank"
+  },
+
+  "graph adjacency list": {
+    "prefix": "graph",
+    "body": [
+      "let n = ${1:10};",
+      "let mut adj: Vec<Vec<usize>> = vec![vec![]; n];",
+      "// for weighted: Vec<Vec<(usize, i64)>>",
+      "adj[${2:u}].push(${3:v});",
+      "adj[${3:v}].push(${2:u}); // undirected"
+    ],
+    "description": "Adjacency list graph"
+  },
+
+  "BFS": {
+    "prefix": "bfs",
+    "body": [
+      "let mut dist = vec![usize::MAX; n];",
+      "let mut queue = std::collections::VecDeque::new();",
+      "dist[${1:start}] = 0;",
+      "queue.push_back(${1:start});",
+      "",
+      "while let Some(u) = queue.pop_front() {",
+      "    for &v in &adj[u] {",
+      "        if dist[v] == usize::MAX {",
+      "            dist[v] = dist[u] + 1;",
+      "            queue.push_back(v);",
+      "        }",
+      "    }",
+      "}"
+    ],
+    "description": "BFS shortest path"
+  },
+
+  "DFS iterative": {
+    "prefix": "dfs",
+    "body": [
+      "let mut visited = vec![false; n];",
+      "let mut stack = vec![${1:start}];",
+      "",
+      "while let Some(u) = stack.pop() {",
+      "    if visited[u] { continue; }",
+      "    visited[u] = true;",
+      "    for &v in &adj[u] {",
+      "        if !visited[v] {",
+      "            stack.push(v);",
+      "        }",
+      "    }",
+      "}"
+    ],
+    "description": "DFS iterative"
+  },
+
+  "Dijkstra": {
+    "prefix": "dijkstra",
+    "body": [
+      "let mut dist = vec![i64::MAX; n];",
+      "let mut heap = std::collections::BinaryHeap::new();",
+      "dist[${1:src}] = 0;",
+      "heap.push(std::cmp::Reverse((0i64, ${1:src})));",
+      "",
+      "while let Some(std::cmp::Reverse((d, u))) = heap.pop() {",
+      "    if d > dist[u] { continue; }",
+      "    for &(v, w) in &adj[u] {",
+      "        if dist[u] + w < dist[v] {",
+      "            dist[v] = dist[u] + w;",
+      "            heap.push(std::cmp::Reverse((dist[v], v)));",
+      "        }",
+      "    }",
+      "}"
+    ],
+    "description": "Dijkstra shortest paths"
+  },
+
+  "main function": {
+    "prefix": "main",
+    "body": ["fn main() {", "    ${1:}", "}"],
+    "description": "Rust main function"
+  },
+
+  "struct with impl": {
+    "prefix": "strimpl",
+    "body": [
+      "struct ${1:Name} {",
+      "    ${2:field}: ${3:Type},",
+      "}",
+      "",
+      "impl ${1:Name} {",
+      "    fn new(${2:field}: ${3:Type}) -> Self {",
+      "        Self { ${2:field} }",
+      "    }",
+      "}"
+    ],
+    "description": "Struct with impl block"
+  },
+
+  "impl Display": {
+    "prefix": "display",
+    "body": [
+      "impl std::fmt::Display for ${1:Type} {",
+      "    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {",
+      "        write!(f, \"${2:{}}\", ${3:self.field})",
+      "    }",
+      "}"
+    ],
+    "description": "impl Display trait"
+  },
+
+  "Result type alias": {
+    "prefix": "result",
+    "body": "type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;",
+    "description": "Convenient Result type alias"
+  },
+
+  "? operator main": {
+    "prefix": "mainq",
+    "body": [
+      "fn main() -> Result<(), Box<dyn std::error::Error>> {",
+      "    ${1:}",
+      "    Ok(())",
+      "}"
+    ],
+    "description": "Main with ? operator support"
   }
 }

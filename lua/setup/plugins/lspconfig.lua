@@ -47,9 +47,10 @@ return {
 		end
 
 		-- setup mason-lspconfig with handlers
+		-- NOTE: rust_analyzer is intentionally excluded — rustaceanvim manages it
 		mason_lspconfig.setup({
 			ensure_installed = {
-				"tsserver",
+				"ts_ls",
 				"html",
 				"cssls",
 				"tailwindcss",
@@ -61,8 +62,7 @@ return {
 				"pyright",
 				"clangd",
 				"gopls",
-				"rust_analyzer",
-				"solidity_ls",
+				"solidity_ls_nomicfoundation",
 			},
 			handlers = {
 				-- default handler
@@ -81,27 +81,33 @@ return {
 								diagnostics = { globals = { "vim" } },
 								workspace = {
 									library = vim.api.nvim_get_runtime_file("", true),
+									checkThirdParty = false,
 								},
 							},
 						},
 					})
 				end,
 
-				-- rust_analyzer specific config with optimizations
-				["rust_analyzer"] = function()
-					lspconfig.rust_analyzer.setup({
+				-- ts_ls with better settings for large codebases
+				["ts_ls"] = function()
+					lspconfig.ts_ls.setup({
 						capabilities = capabilities,
 						settings = {
-							["rust-analyzer"] = {
-								cargo = {
-									features = "all",
+							typescript = {
+								inlayHints = {
+									includeInlayParameterNameHints = "all",
+									includeInlayFunctionParameterTypeHints = true,
+									includeInlayVariableTypeHints = true,
+									includeInlayPropertyDeclarationTypeHints = true,
+									includeInlayFunctionLikeReturnTypeHints = true,
+									includeInlayEnumMemberValueHints = true,
 								},
-								checkOnSave = {
-									command = "clippy",
-									extraArgs = { "--", "-W", "clippy::all" },
-								},
-								procMacro = {
-									enable = true,
+							},
+							javascript = {
+								inlayHints = {
+									includeInlayParameterNameHints = "all",
+									includeInlayFunctionParameterTypeHints = true,
+									includeInlayVariableTypeHints = true,
 								},
 							},
 						},
