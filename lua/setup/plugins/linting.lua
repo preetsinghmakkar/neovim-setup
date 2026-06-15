@@ -22,8 +22,9 @@ return {
       end,
     })
 
-    vim.keymap.set("n", "<leader>l", function()
+    -- Capital L to free up <leader>lc* namespace for LeetCode
+    vim.keymap.set("n", "<leader>L", function()
       lint.try_lint()
-    end, { desc = "Trigger linting for current file" })
+    end, { desc = "Trigger linting" })
   end,
 }

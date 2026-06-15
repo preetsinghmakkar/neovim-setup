@@ -363,14 +363,47 @@ These keys only activate when you're in `Cargo.toml`:
 
 ---
 
+## LeetCode (kawre/leetcode.nvim)
+
+> Launch: `nvim leetcode.nvim` — see **LEETCODE.md** for the full guide.
+
+| Key | Action |
+|-----|--------|
+| `<leader>lc` | Open LeetCode dashboard |
+| `<leader>lcq` | Browse problem list (Telescope) |
+| `<leader>lcy` | Today's daily challenge |
+| `<leader>lct` | Open problem tabs |
+| `<leader>lca` | Set auth cookie — runs `:Leet cookie update` |
+| `<leader>lcx` | Sign out |
+| `<leader>lcm` | Random problem |
+| `<leader>lco` | Open current problem in browser |
+
+**Inside a problem buffer:**
+
+| Key | Action |
+|-----|--------|
+| `<leader>lcr` | Run test cases |
+| `<leader>lcs` | Submit solution |
+| `<leader>lcd` | Toggle description panel |
+| `<leader>lcc` | Toggle console (test I/O) |
+| `<leader>lci` | Problem info (difficulty, tags) |
+| `<leader>lcl` | Switch language |
+
+---
+
 ## Code Formatting & Linting
 
 | Key | Action |
 |-----|--------|
 | `<leader>mp` | Format file (or visual selection) |
-| `<leader>l` | Trigger linting manually |
+| `<leader>L` | Trigger linting manually |
 
 **Auto-format on save** is enabled for all supported filetypes.
+
+| Key | Action |
+|-----|--------|
+| `<leader>mp` | Format file (or visual selection) |
+| `<leader>L` | Trigger linting manually |
 
 | Language | Formatter | Linter |
 |----------|-----------|--------|
