@@ -71,6 +71,13 @@ return {
 			["question_enter"] = {
 				function()
 					local bufnr = vim.api.nvim_get_current_buf()
+
+					-- The injector adds `pub struct Solution;` to the buffer but NOT to the
+					-- disk file. This buffer/disk mismatch causes rust-analyzer "line offset"
+					-- errors and health status noise. Suppress diagnostics for this buffer
+					-- while keeping LSP attached for completions.
+					vim.diagnostic.disable(bufnr)
+
 					local o = function(desc)
 						return { buffer = bufnr, silent = true, desc = desc }
 					end
@@ -91,6 +98,17 @@ return {
 
 	config = function(_, opts)
 		require("leetcode").setup(opts)
+
+		-- Suppress rust-analyzer diagnostics whenever LSP attaches to a LeetCode
+		-- solution file. The question_enter hook handles the first attach, but LSP
+		-- can re-attach after a BufWritePost — this catches that case too.
+		local lc_dir = vim.fn.stdpath("data") .. "/leetcode/"
+		vim.api.nvim_create_autocmd("LspAttach", {
+			pattern = lc_dir .. "*.rs",
+			callback = function(args)
+				vim.diagnostic.disable(args.buf)
+			end,
+		})
 
 		-- Global keymaps.
 		-- NOTE: :Leet subcommands (run, submit, cookie, etc.) only exist after the
