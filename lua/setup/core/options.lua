@@ -3,7 +3,7 @@ vim.cmd("let g:netrw_liststyle = 3")
 local opt = vim.opt
 
 -- line numbers
-opt.relativenumber = true
+opt.relativenumber = false   -- absolute numbers (matches target aesthetic)
 opt.number = true
 
 -- tabs & indentation
@@ -32,7 +32,7 @@ opt.sidescrolloff = 8
 opt.termguicolors = true
 opt.background = "dark"
 opt.signcolumn = "yes"
-opt.colorcolumn = "100"  -- guide line at 100 chars (Rust default)
+opt.colorcolumn = ""     -- no column guide (was visually cluttering the window)
 opt.showmode = false      -- mode is shown in lualine
 
 -- backspace

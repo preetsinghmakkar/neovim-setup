@@ -55,6 +55,8 @@ keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
 keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
 keymap.set("n", "<leader>se", "<C-w>=", { desc = "Equalize splits" })
 keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
+-- Close ALL panels (Trouble + native quickfix/loclist) from any window
+keymap.set("n", "<leader>xc", "<cmd>Trouble close<CR><cmd>cclose<CR><cmd>lclose<CR>", { desc = "Close Trouble/quickfix/loclist" })
 
 -- navigate between splits with Ctrl+hjkl
 keymap.set("n", "<C-h>", "<C-w>h", { desc = "Move to left split" })
