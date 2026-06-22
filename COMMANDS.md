@@ -178,14 +178,15 @@ Works in any buffer with an attached LSP (Rust, TS, Solidity, etc.).
 
 | Key | Action |
 |-----|--------|
-| `K` | Hover documentation (Rust: hover + actions) |
-| `gd` | Go to definition |
-| `gD` | Go to declaration |
-| `gi` | Go to implementation |
-| `gr` | List all references |
-| `<leader>rn` | Rename symbol (renames across all files) |
-| `<leader>ca` | Code actions (Rust: enhanced rustaceanvim) |
-| `<leader>d` | Show diagnostic float |
+| `K` | Hover documentation |
+| `gd` | Go to definition → opens in **Trouble** panel (press `q` or `<leader>xc` to close) |
+| `gD` | Go to declaration (single result, no panel) |
+| `gi` | Go to implementation → opens in **Trouble** panel |
+| `gr` | List all references → opens in **Trouble** panel |
+| `gy` | Go to type definition → opens in **Trouble** panel |
+| `<leader>rn` | Rename symbol across all files |
+| `<leader>ca` | Code actions |
+| `<leader>d` | Show diagnostic float for current line |
 | `[d` / `]d` | Prev / next diagnostic |
 | `<leader>dd` | Toggle inline virtual text diagnostics |
 | `<leader>dl` | Send diagnostics to location list |
@@ -442,9 +443,15 @@ These keys only activate when you're in `Cargo.toml`:
 | `<leader>xq` | Quickfix list (Trouble) |
 | `<leader>xl` | Location list (Trouble) |
 | `<leader>xt` | TODOs in Trouble |
+| `<leader>xc` | **Close all panels** — closes Trouble + quickfix + loclist from ANY window |
 | `<leader>dd` | Toggle inline virtual text |
 | `<leader>dl` | Send to location list |
 | `<leader>d` | Float diagnostic for current line |
+
+> **Closing the Trouble/Definitions panel:**
+> - `<leader>xc` — closes from anywhere (no need to focus the panel)
+> - `q` or `Esc` — closes when cursor is inside the panel
+> - `gd` again — toggles it closed (same key that opened it)
 
 ---
 
