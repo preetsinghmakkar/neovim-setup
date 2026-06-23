@@ -30,7 +30,8 @@
 22. [TODO Comments](#todo-comments)
 23. [Session Management](#session-management)
 24. [Rust Snippets Reference](#rust-snippets-reference)
-25. [Vim Fundamentals Cheatsheet](#vim-fundamentals-cheatsheet)
+25. [AI — Claude Code](#ai--claude-code)
+26. [Vim Fundamentals Cheatsheet](#vim-fundamentals-cheatsheet)
 
 ---
 
@@ -538,6 +539,28 @@ Powerful code selection for reading/editing codebases.
 |-----|--------|
 | `<leader>wr` | Restore session for current directory |
 | `<leader>ws` | Save current session |
+
+---
+
+## AI — Claude Code
+
+Uses `claudecode.nvim` which connects to the `claude` CLI (already installed).  
+Claude can read your current buffer, apply inline edits, and run in a side panel — same as the VSCode extension.
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `<leader>ac` | n | Toggle Claude Code panel (right split) |
+| `<leader>as` | v | Send visual selection to Claude |
+| `<leader>af` | n | Focus / switch to Claude window |
+
+### Workflow
+1. Open any file, then `<leader>ac` — Claude Code opens in a right-side terminal
+2. Ask Claude to explain code, fix bugs, write tests, etc. — same as VSCode
+3. In visual mode, select a function/block → `<leader>as` to send it with context
+4. `kj` inside the Claude terminal to exit insert mode and navigate away
+5. `<leader>ac` again to toggle it closed
+
+> Claude sees your full project context just like in VSCode — it uses the same `claude` CLI under the hood.
 
 ---
 
