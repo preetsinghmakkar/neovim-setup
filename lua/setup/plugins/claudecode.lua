@@ -1,10 +1,9 @@
 return {
-	"crnvl96/claudecode.nvim",
+	"coder/claudecode.nvim",
 	dependencies = { "akinsho/toggleterm.nvim" },
 	event = "VeryLazy",
 	opts = {
 		terminal = {
-			provider = "toggleterm",
 			split_side = "right",
 			split_width_percentage = 0.38,
 		},
