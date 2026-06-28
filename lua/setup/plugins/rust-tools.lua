@@ -238,9 +238,37 @@ return {
 				},
 			}
 
-			-- Reuse for C/C++
-			dap.configurations.cpp = dap.configurations.rust
-			dap.configurations.c = dap.configurations.rust
+			-- C/C++ configs — separate from Rust; default to build/ dir (cmake) or cwd
+			dap.configurations.cpp = {
+				{
+					name = "Launch (build/)",
+					type = "codelldb",
+					request = "launch",
+					program = function()
+						return vim.fn.input("Executable: ", vim.fn.getcwd() .. "/build/", "file")
+					end,
+					cwd = "${workspaceFolder}",
+					stopOnEntry = false,
+				},
+				{
+					name = "Launch (cwd)",
+					type = "codelldb",
+					request = "launch",
+					program = function()
+						return vim.fn.input("Executable: ", vim.fn.getcwd() .. "/", "file")
+					end,
+					cwd = "${workspaceFolder}",
+					stopOnEntry = false,
+				},
+				{
+					name = "Attach to process",
+					type = "codelldb",
+					request = "attach",
+					pid = require("dap.utils").pick_process,
+					cwd = "${workspaceFolder}",
+				},
+			}
+			dap.configurations.c = dap.configurations.cpp
 		end,
 	},
 

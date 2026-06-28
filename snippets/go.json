@@ -1,0 +1,304 @@
+{
+  "main function": {
+    "prefix": "main",
+    "body": ["func main() {", "\t${1:}", "}"],
+    "description": "Go main function"
+  },
+
+  "CP main (fast I/O)": {
+    "prefix": "cpmain",
+    "body": [
+      "package main",
+      "",
+      "import (",
+      "\t\"bufio\"",
+      "\t\"fmt\"",
+      "\t\"os\"",
+      ")",
+      "",
+      "var reader *bufio.Reader",
+      "var writer *bufio.Writer",
+      "",
+      "func solve() {",
+      "\t${1:// solve here}",
+      "}",
+      "",
+      "func main() {",
+      "\treader = bufio.NewReader(os.Stdin)",
+      "\twriter = bufio.NewWriter(os.Stdout)",
+      "\tdefer writer.Flush()",
+      "\tsolve()",
+      "}"
+    ],
+    "description": "CP main with fast buffered I/O"
+  },
+
+  "CP main (multi-test)": {
+    "prefix": "cpmt",
+    "body": [
+      "package main",
+      "",
+      "import (",
+      "\t\"bufio\"",
+      "\t\"fmt\"",
+      "\t\"os\"",
+      ")",
+      "",
+      "var reader *bufio.Reader",
+      "var writer *bufio.Writer",
+      "",
+      "func solve() {",
+      "\t${1:// solve one test case}",
+      "}",
+      "",
+      "func main() {",
+      "\treader = bufio.NewReader(os.Stdin)",
+      "\twriter = bufio.NewWriter(os.Stdout)",
+      "\tdefer writer.Flush()",
+      "\tvar t int",
+      "\tfmt.Fscan(reader, &t)",
+      "\tfor ; t > 0; t-- {",
+      "\t\tsolve()",
+      "\t}",
+      "}"
+    ],
+    "description": "CP main with multiple test cases"
+  },
+
+  "read int": {
+    "prefix": "rdi",
+    "body": "var ${1:n} int\nfmt.Fscan(reader, &${1:n})",
+    "description": "Read int from buffered stdin"
+  },
+
+  "read two ints": {
+    "prefix": "rdi2",
+    "body": "var ${1:a}, ${2:b} int\nfmt.Fscan(reader, &${1:a}, &${2:b})",
+    "description": "Read two ints from buffered stdin"
+  },
+
+  "print line": {
+    "prefix": "pln",
+    "body": "fmt.Fprintln(writer, ${1:val})",
+    "description": "Print line to buffered writer"
+  },
+
+  "printf": {
+    "prefix": "pf",
+    "body": "fmt.Fprintf(writer, \"${1:%d}\\n\", ${2:val})",
+    "description": "Printf to buffered writer"
+  },
+
+  "for range": {
+    "prefix": "fori",
+    "body": ["for ${1:i} := ${2:0}; ${1:i} < ${3:n}; ${1:i}++ {", "\t${4:}", "}"],
+    "description": "Classic for loop"
+  },
+
+  "for range (over slice)": {
+    "prefix": "fore",
+    "body": ["for ${1:i}, ${2:v} := range ${3:slice} {", "\t${4:}", "}"],
+    "description": "Range for loop over slice"
+  },
+
+  "slice": {
+    "prefix": "slc",
+    "body": "${1:v} := make([]${2:int}, ${3:n})",
+    "description": "Make a slice"
+  },
+
+  "2D slice": {
+    "prefix": "slc2d",
+    "body": [
+      "${1:grid} := make([][]${2:int}, ${3:rows})",
+      "for i := range ${1:grid} {",
+      "\t${1:grid}[i] = make([]${2:int}, ${4:cols})",
+      "}"
+    ],
+    "description": "2D slice"
+  },
+
+  "map": {
+    "prefix": "mp",
+    "body": "${1:m} := make(map[${2:int}]${3:int})",
+    "description": "Make a map"
+  },
+
+  "sort ints": {
+    "prefix": "sort",
+    "body": "sort.Ints(${1:v})",
+    "description": "Sort int slice ascending"
+  },
+
+  "sort descending": {
+    "prefix": "sortd",
+    "body": "sort.Sort(sort.Reverse(sort.IntSlice(${1:v})))",
+    "description": "Sort int slice descending"
+  },
+
+  "sort by key": {
+    "prefix": "sortk",
+    "body": [
+      "sort.Slice(${1:v}, func(i, j int) bool {",
+      "\treturn ${2:v[i] < v[j]}",
+      "})"
+    ],
+    "description": "Sort slice by custom key"
+  },
+
+  "binary search": {
+    "prefix": "bsearch",
+    "body": [
+      "lo, hi := ${1:0}, ${2:n}",
+      "for lo < hi {",
+      "\tmid := lo + (hi-lo)/2",
+      "\tif ${3:check(mid)} {",
+      "\t\thi = mid",
+      "\t} else {",
+      "\t\tlo = mid + 1",
+      "\t}",
+      "}",
+      "// lo is the answer"
+    ],
+    "description": "Custom binary search"
+  },
+
+  "GCD": {
+    "prefix": "gcd",
+    "body": [
+      "func gcd(a, b int) int {",
+      "\tfor b != 0 { a, b = b, a%b }",
+      "\treturn a",
+      "}"
+    ],
+    "description": "GCD function"
+  },
+
+  "abs int": {
+    "prefix": "absi",
+    "body": [
+      "func abs(x int) int {",
+      "\tif x < 0 { return -x }",
+      "\treturn x",
+      "}"
+    ],
+    "description": "Absolute value for int"
+  },
+
+  "min/max helpers": {
+    "prefix": "minmax",
+    "body": [
+      "func min(a, b int) int {",
+      "\tif a < b { return a }",
+      "\treturn b",
+      "}",
+      "",
+      "func max(a, b int) int {",
+      "\tif a > b { return a }",
+      "\treturn b",
+      "}"
+    ],
+    "description": "min/max helper functions (for Go < 1.21)"
+  },
+
+  "prefix sum": {
+    "prefix": "prefix",
+    "body": [
+      "prefix := make([]int, len(${1:v})+1)",
+      "for i, x := range ${1:v} {",
+      "\tprefix[i+1] = prefix[i] + x",
+      "}"
+    ],
+    "description": "Build prefix sum array"
+  },
+
+  "union find": {
+    "prefix": "uf",
+    "body": [
+      "type UnionFind struct{ parent, rank []int }",
+      "",
+      "func newUF(n int) *UnionFind {",
+      "\tp := make([]int, n)",
+      "\tfor i := range p { p[i] = i }",
+      "\treturn &UnionFind{p, make([]int, n)}",
+      "}",
+      "",
+      "func (uf *UnionFind) find(x int) int {",
+      "\tif uf.parent[x] != x { uf.parent[x] = uf.find(uf.parent[x]) }",
+      "\treturn uf.parent[x]",
+      "}",
+      "",
+      "func (uf *UnionFind) union(x, y int) bool {",
+      "\trx, ry := uf.find(x), uf.find(y)",
+      "\tif rx == ry { return false }",
+      "\tif uf.rank[rx] < uf.rank[ry] { rx, ry = ry, rx }",
+      "\tuf.parent[ry] = rx",
+      "\tif uf.rank[rx] == uf.rank[ry] { uf.rank[rx]++ }",
+      "\treturn true",
+      "}"
+    ],
+    "description": "Union-Find (DSU)"
+  },
+
+  "BFS": {
+    "prefix": "bfs",
+    "body": [
+      "dist := make([]int, n)",
+      "for i := range dist { dist[i] = -1 }",
+      "queue := []int{${1:start}}",
+      "dist[${1:start}] = 0",
+      "for len(queue) > 0 {",
+      "\tu := queue[0]; queue = queue[1:]",
+      "\tfor _, v := range adj[u] {",
+      "\t\tif dist[v] == -1 {",
+      "\t\t\tdist[v] = dist[u] + 1",
+      "\t\t\tqueue = append(queue, v)",
+      "\t\t}",
+      "\t}",
+      "}"
+    ],
+    "description": "BFS shortest path"
+  },
+
+  "DFS": {
+    "prefix": "dfs",
+    "body": [
+      "visited := make([]bool, n)",
+      "var dfs func(u int)",
+      "dfs = func(u int) {",
+      "\tvisited[u] = true",
+      "\tfor _, v := range adj[u] {",
+      "\t\tif !visited[v] { dfs(v) }",
+      "\t}",
+      "}",
+      "dfs(${1:start})"
+    ],
+    "description": "DFS recursive with closure"
+  },
+
+  "debug print": {
+    "prefix": "dbg",
+    "body": "fmt.Fprintf(os.Stderr, \"[DEBUG] ${1:var} = %v\\n\", ${1:var})",
+    "description": "Debug print to stderr"
+  },
+
+  "struct": {
+    "prefix": "st",
+    "body": [
+      "type ${1:Name} struct {",
+      "\t${2:Field} ${3:Type}",
+      "}",
+      "",
+      "func new${1:Name}(${2:field} ${3:Type}) *${1:Name} {",
+      "\treturn &${1:Name}{${2:Field}: ${2:field}}",
+      "}"
+    ],
+    "description": "Struct with constructor"
+  },
+
+  "error check": {
+    "prefix": "iferr",
+    "body": ["if err != nil {", "\t${1:return err}", "}"],
+    "description": "if err != nil check"
+  }
+}

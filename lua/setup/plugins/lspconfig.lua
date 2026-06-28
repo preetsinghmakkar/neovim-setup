@@ -123,6 +123,45 @@ return {
 					})
 				end,
 
+				-- gopls with inlay hints, gofumpt, and organize-imports on save
+				["gopls"] = function()
+					lspconfig.gopls.setup({
+						capabilities = capabilities,
+						settings = {
+							gopls = {
+								analyses = {
+									unusedparams = true,
+									shadow = true,
+								},
+								staticcheck = true,
+								gofumpt = true,
+								hints = {
+									assignVariableTypes = true,
+									compositeLiteralFields = true,
+									constantValues = true,
+									functionTypeParameters = true,
+									parameterNames = true,
+									rangeVariableTypes = true,
+								},
+							},
+						},
+						on_attach = function(client, bufnr)
+							if client.server_capabilities.inlayHintProvider then
+								vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+							end
+							vim.api.nvim_create_autocmd("BufWritePre", {
+								buffer = bufnr,
+								callback = function()
+									vim.lsp.buf.code_action({
+										context = { only = { "source.organizeImports" } },
+										apply = true,
+									})
+								end,
+							})
+						end,
+					})
+				end,
+
 				-- ts_ls with better settings for large codebases
 				["ts_ls"] = function()
 					lspconfig.ts_ls.setup({

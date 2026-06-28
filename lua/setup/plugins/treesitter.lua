@@ -17,6 +17,11 @@ return {
 				"toml",
 				"c",
 				"cpp",
+				-- Go
+				"go",
+				"gomod",
+				"gosum",
+				"gowork",
 				-- Web / JS / TS
 				"javascript",
 				"typescript",
@@ -42,7 +47,6 @@ return {
 				"markdown",
 				"markdown_inline",
 				"python",
-				"git_diff",
 				"git_rebase",
 				"gitcommit",
 				"gitignore",

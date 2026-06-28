@@ -18,7 +18,7 @@ return {
 		arg = "leetcode.nvim",
 
 		-- Primary language
-		lang = "rust",
+		lang = "cpp",
 
 		-- Where solutions are stored (`directory` is deprecated — use storage.home)
 		storage = {
@@ -72,12 +72,6 @@ return {
 				function()
 					local bufnr = vim.api.nvim_get_current_buf()
 
-					-- The injector adds `pub struct Solution;` to the buffer but NOT to the
-					-- disk file. This buffer/disk mismatch causes rust-analyzer "line offset"
-					-- errors and health status noise. Suppress diagnostics for this buffer
-					-- while keeping LSP attached for completions.
-					vim.diagnostic.disable(bufnr)
-
 					local o = function(desc)
 						return { buffer = bufnr, silent = true, desc = desc }
 					end
@@ -99,16 +93,18 @@ return {
 	config = function(_, opts)
 		require("leetcode").setup(opts)
 
-		-- Suppress rust-analyzer diagnostics whenever LSP attaches to a LeetCode
-		-- solution file. The question_enter hook handles the first attach, but LSP
-		-- can re-attach after a BufWritePost — this catches that case too.
+		-- Create a .clangd config in the LeetCode storage dir so clangd uses C++20
+		-- and resolves standard headers without needing a compile_commands.json.
 		local lc_dir = vim.fn.stdpath("data") .. "/leetcode/"
-		vim.api.nvim_create_autocmd("LspAttach", {
-			pattern = lc_dir .. "*.rs",
-			callback = function(args)
-				vim.diagnostic.disable(args.buf)
-			end,
-		})
+		local clangd_cfg = lc_dir .. ".clangd"
+		if vim.fn.filereadable(clangd_cfg) == 0 then
+			vim.fn.mkdir(lc_dir, "p")
+			local f = io.open(clangd_cfg, "w")
+			if f then
+				f:write("CompileFlags:\n  Add: [-std=c++20]\n")
+				f:close()
+			end
+		end
 
 		-- Global keymaps.
 		-- NOTE: :Leet subcommands (run, submit, cookie, etc.) only exist after the

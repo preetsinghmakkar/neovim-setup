@@ -22,7 +22,7 @@ return {
         python = { "isort", "black" },
         cpp = { "clang-format" },
         c = { "clang-format" },
-        go = { "gofmt" },
+        go = { "gofumpt" },
         rust = { "rustfmt" },
       },
       format_on_save = {

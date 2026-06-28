@@ -118,10 +118,20 @@ keymap.set("n", "<leader>ir", function()
 	local input_file = file .. ".in"
 	vim.cmd("w")
 
-	if vim.fn.filereadable(input_file) == 1 then
-		vim.cmd("split | terminal cargo run --release < " .. input_file)
-	else
+	if vim.fn.filereadable(input_file) == 0 then
 		print("No input file. Use <leader>ic to create one.")
+		return
+	end
+
+	local ft = vim.bo.filetype
+	if ft == "rust" then
+		vim.cmd("split | terminal cargo run --release < " .. input_file)
+	elseif ft == "cpp" then
+		vim.cmd("split | terminal clang++ % -O2 -std=c++20 -o " .. file .. " && ./" .. file .. " < " .. input_file)
+	elseif ft == "go" then
+		vim.cmd("split | terminal go run % < " .. input_file)
+	else
+		print("No runner configured for: " .. ft)
 	end
 end, { desc = "[CP] Run with input file" })
 
@@ -134,7 +144,9 @@ keymap.set("n", "<leader>rr", function()
 		vim.cmd("split | terminal cargo run --release")
 	elseif ft == "cpp" then
 		local file = vim.fn.expand("%:r")
-		vim.cmd("split | terminal clang++ % -O2 -std=c++17 -o " .. file .. " && ./" .. file)
+		vim.cmd("split | terminal clang++ % -O2 -std=c++20 -o " .. file .. " && ./" .. file)
+	elseif ft == "go" then
+		vim.cmd("split | terminal go run %")
 	else
 		print("No runner configured for: " .. ft)
 	end
@@ -194,6 +206,34 @@ fn main() {
 		print("Buffer not empty — template not inserted")
 	end
 end, { desc = "[CP] Insert solution template" })
+
+---------------------
+-- Go
+---------------------
+
+-- Buffer-local Go keymaps that only activate in .go files
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "go",
+	callback = function(ev)
+		local buf = ev.buf
+		local o = function(desc)
+			return { buffer = buf, silent = true, desc = desc }
+		end
+
+		keymap.set("n", "<leader>gR", "<cmd>split | terminal go run .<CR>", o("[Go] Run module"))
+		keymap.set("n", "<leader>gT", "<cmd>split | terminal go test ./...<CR>", o("[Go] Test all"))
+		keymap.set("n", "<leader>gt", "<cmd>split | terminal go test %<CR>", o("[Go] Test file"))
+		keymap.set("n", "<leader>gb", "<cmd>split | terminal go build ./...<CR>", o("[Go] Build"))
+		keymap.set("n", "<leader>gv", "<cmd>split | terminal go vet ./...<CR>", o("[Go] Vet"))
+		keymap.set("n", "<leader>gm", "<cmd>split | terminal go mod tidy<CR>", o("[Go] Mod tidy"))
+		keymap.set("n", "<leader>gi", function()
+			vim.lsp.inlay_hint.enable(
+				not vim.lsp.inlay_hint.is_enabled({ bufnr = buf }),
+				{ bufnr = buf }
+			)
+		end, o("[Go] Toggle inlay hints"))
+	end,
+})
 
 ---------------------
 -- Diagnostics
